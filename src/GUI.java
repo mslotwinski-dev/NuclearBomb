@@ -28,10 +28,8 @@ public class GUI extends JFrame {
 		private RoundedTextField N = new RoundedTextField(8,20);
 		
 		private JButton Run = new JButton("Run");
-		private JLabel L_PM = new JLabel("P(masa)");
-		private JLabel L_PT = new JLabel("P(czas)");
-		private RoundedTextField T_PM = new RoundedTextField(4,20);
-		private RoundedTextField T_PT = new RoundedTextField(4,20);
+		private JButton T_PM = new JButton("P(masa)");
+		private JButton T_PT = new JButton("P(czas)");
 		
 		public GUI() {
 			super("Będzie boom");
@@ -79,7 +77,7 @@ public class GUI extends JFrame {
 			panel_E2_2.setBackground(Color.white);
 			panel_E2_2x.setBackground(Color.white);
 			
-			panel_E.setLayout(new GridLayout(2,1,10,10));
+			panel_E.setLayout(new GridLayout(2,1,5,10));
 			panel_E.add(panel_E1);
 			panel_E.add(panel_E2);
 
@@ -89,21 +87,23 @@ public class GUI extends JFrame {
 			panel_E1.add(B);
 			panel_E1.add(N);
 			
+			A.setPlaceholder("A");
+			B.setPlaceholder("B");
+			N.setPlaceholder("N");
+			
 			panel_E2.setLayout(new GridLayout(2,1));
 			panel_E2.add(panel_E2_1);
 			panel_E2.add(panel_E2_2);
 			
-			panel_E2_2.setLayout(new GridLayout(2,1,5,10));
+			panel_E2_2.setLayout(new GridLayout(2,1,5,5));
 			panel_E2_2.add(panel_E2_2x);
 			panel_E2_2.add(Run);
 
-			panel_E2_2x.setLayout(new GridLayout(1,2,5,10));
+			panel_E2_2x.setLayout(new GridLayout(1,2,5,5));
 			panel_E2_2x.add(T_PM);
 			panel_E2_2x.add(T_PT);
 			
-			T_PM.setPlaceholder("P(masa)");
-			T_PT.setPlaceholder("P(czas)");
 			
 		}
-
+		
 }

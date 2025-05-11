@@ -27,7 +27,7 @@ public class GUI extends JFrame {
 			super("Będzie boom");
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
-			ImageIcon icon = new ImageIcon(new ImageIcon(GUI.class.getResource("nuclear.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			ImageIcon icon = new ImageIcon(new ImageIcon(GUI.class.getResource("../assets/nuclear.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
 			Run =  new RoundedJButton("Run",icon);
 
 			Image toolbaricon = Toolkit.getDefaultToolkit().getImage("icon.png");

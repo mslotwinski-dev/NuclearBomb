@@ -21,6 +21,7 @@ public class SimulationParams {
     this.B = B;
     this.N_NEUTRONS = N_NEUTRONS;
     this.ENERGY_RELEASED = ENERGY_RELEASED;
-
   }
+
+    public SimulationParams() { }
 }

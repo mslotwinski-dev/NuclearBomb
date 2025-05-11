@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Neutron {
-  static double speed = 2.2e7; // Prędkość neutronu (m/s)
+  static double speed = 2.2e7;
 
-  double x, y, z;
-  double vx, vy, vz;
-  boolean decayed = false; 
+  private double x, y, z;
+  private double vx, vy, vz;
+  private boolean decayed = false; 
 
   Neutron(double x, double y, double z) {
     this.x = x;
@@ -51,40 +51,38 @@ public class Neutron {
   Atom CheckReact(List<Atom> atoms) {
     for (Atom atom : atoms) {
       if (Intersects(atom)) {
-        if (atom.decayed) {
-          continue;  // Jeśli atom już uległ rozpadowi, pomiń go
+        if (atom.isDecayed()) {
+          continue;
         }
-        return atom;  // Zwrócenie pierwszego atomu, który został przecięty
+        return atom;
       }
     }
-    return null;  // Jeśli żaden atom nie został przecięty, zwróć null
+    return null;
   }
   
   boolean Intersects(Atom atom) {
-    // Różnica między pozycją neutronu a środkiem atomu
     double dx = atom.x - this.x;
     double dy = atom.y - this.y;
     double dz = atom.z - this.z;
+
+    // Współrzędne neutronu: R(t) = p_0 + v * t
+    // Współrzędne atomu: C = (x, y, z), promień r
+    // Warunek przecięcia: || R(t) - C ||^2 = r^2
   
-    // Współczynniki równania kwadratowego
     double a = vx * vx + vy * vy + vz * vz;
     double b = 2 * (vx * dx + vy * dy + vz * dz);
     double c = dx * dx + dy * dy + dz * dz - Atom.RADIUS * Atom.RADIUS;
   
-    // Obliczenie delt (dyskryminanta)
     double discriminant = b * b - 4 * a * c;
   
-    // Jeżeli brak rozwiązań rzeczywistych (brak przecięcia)
     if (discriminant < 0) {
       return false;
     }
   
-    // Obliczenie miejsc zerowych (t)
     double sqrtDisc = Math.sqrt(discriminant);
     double t1 = (-b - sqrtDisc) / (2 * a);
     double t2 = (-b + sqrtDisc) / (2 * a);
   
-    // Sprawdzenie, czy istnieje rozwiązanie t > 0
     return t1 >= 0 || t2 >= 0;
   }
 
@@ -97,6 +95,7 @@ public class Neutron {
   }
 
   boolean isDecayed() {
-    return decayed; // Replace with actual condition
+    return decayed; 
   }
+
 }

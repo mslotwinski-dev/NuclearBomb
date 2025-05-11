@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class Atom {
   static double RADIUS = 1e-8;
-  Random rand = new Random();
+  private Random rand = new Random();
 
-  double x, y, z;
-  boolean decayed = false;  
+  final double x, y, z;
+  private boolean decayed = false;  
 
   Atom(double x, double y, double z) {
     this.x = x;
@@ -30,8 +30,7 @@ public class Atom {
     System.out.println("Atom: " + this.x + " " + this.y + " " + this.z);
   }
 
-  boolean isDecayed() {
-    return decayed;
+  public boolean isDecayed() {
+      return decayed;
   }
-  
 }

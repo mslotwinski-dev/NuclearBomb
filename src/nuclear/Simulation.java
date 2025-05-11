@@ -6,17 +6,15 @@ import java.util.List;
 import java.util.Random;
 
 public class Simulation {
-  SimulationParams params;
-  
   Random rand = new Random();
-  double yes = 0;
-  double no = 0;
-  
+
+  SimulationParams params;
   double Energy = 0;
   double Power = 0;
   double Neutrons = 0;
 
-
+  double yes = 0;
+  double no = 0;
 
   List<Atom> atoms = new ArrayList<>();
   List<Neutron> neutrons = new ArrayList<>();
@@ -29,10 +27,19 @@ public class Simulation {
     }
   }
 
-  void NextStep() {
-    double temptotal = Energy;
-      
-    // SPONTANICZNE ROZPADY
+  Data getData(Data data) {
+    data.energy.add(Energy);
+    data.power.add(Power);
+    data.neutrons.add(Neutrons);
+
+    return data;
+  }
+
+  public void Success() throws Exception {
+    System.out.println("Sukces neutronów: " + yes / (yes + no) * 100 + "%");
+  }
+
+  void Decays() {
     for (Atom atom : atoms) {
       if (atom.React(params.A)) {
         Energy += params.ENERGY_RELEASED;
@@ -41,15 +48,15 @@ public class Simulation {
         }
       }
     }
+  }
 
-    // NEUTRONY
-
-    List<Neutron> newNeutrons = new ArrayList<>(); // Lista nowych neutronów
+  void Collisions() {
+    List<Neutron> newNeutrons = new ArrayList<>();
 
     for (Neutron neutron : neutrons) {
       if (neutron.OutsideBox(params.L)) {
         no++;
-        continue; // Pomijamy neutrony, które wyszły poza próbkę
+        continue;
       }
       
       Atom atom = neutron.CheckReact(atoms);
@@ -72,58 +79,43 @@ public class Simulation {
     }
 
     for (Neutron neutron : newNeutrons) {
-      neutrons.add(neutron); // Dodajemy nowe neutrony do listy
+      neutrons.add(neutron);
     }
+  }
 
-    // Usunięcie z tablicy przereagowanych atomów i neutronów
+  void Clean() {
     for (int i = 0; i < neutrons.size(); i++) {
-      if (neutrons.get(i).decayed) {
+      if (neutrons.get(i).isDecayed()) {
         neutrons.remove(i);
         i--;
       }
     }
     
     for (int i = 0; i < atoms.size(); i++) {
-      if (atoms.get(i).decayed) {
+      if (atoms.get(i).isDecayed()) {
         atoms.remove(i);
         i--;
       }
     }
+  }
 
+  void Log() {
     System.out.println(new BigDecimal(Energy).toPlainString().replace(".", ","));
+  }
 
+  void NextStep() {
+    double temptotal = Energy;
+      
+    Decays(); // Spontaniczne rozpady atomów uranu
+    Collisions(); // Zderzenia neutronów z atomami
+    Clean(); // Usunięcie neutronów i atomów, które uległy rozpadowi
+    
+    Log(); // Wypisanie energii
 
     Power = Energy - temptotal;
     Neutrons = neutrons.size();
-
-        // n_energy.add(Energy); 
-    // n_power.add(Energy - temptotal);
-    // n_neutron.add((double) neutrons.size()); 
-  
-  }
-
-  List<Double> getEnergy(List<Double> n) {
-    n.add(Energy);
-    return n;
-  }
-
-  List<Double> getPower(List<Double> n) {
-    n.add(Power);
-    return n;
-  }
-
-  List<Double> getNeutrons(List<Double> n) {
-    n.add(Neutrons);
-    return n;
   }
 
 
-  public void Run() throws Exception {
-    System.out.println("Hello, World!");
 
-    System.out.println("Sukces neutronów: " + yes / (yes + no) * 100 + "%");
-   
-    
-
-  }
 }

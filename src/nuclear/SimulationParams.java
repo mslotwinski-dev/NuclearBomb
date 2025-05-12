@@ -2,7 +2,7 @@ package nuclear;
 
 public class SimulationParams {
   double L = 1e-6; // Rozmiar próbki (m)
-  int N_U = 10000; // Liczba atomów uranu
+  int N_U = 2000; // Liczba atomów uranu
   double TIME_STEP = 1e-9; // Krok czasowy (s)
   int MAX_ITER = 300; // Maksymalna liczba iteracji
   

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 public class GUI extends JFrame {
 
@@ -12,25 +13,37 @@ public class GUI extends JFrame {
 		private Boolean miga = false;
 		
 		private JPanel panel_N,panel_E,panel_C;
-		private JPanel panel_E1,panel_E2,panel_E2_1,panel_E2_2,panel_E2_2x;
+		private JPanel panel_wielkosci,panel_materialu,panel_danych,panel_na3;
+		private JPanel panel_e1,panel_e2,panel_e3;
 		
+		private JLabel ikonka_materialu;
+		
+		private RoundedTextField size = new RoundedTextField(8,20);
 		private RoundedTextField A = new RoundedTextField(8,20);
 		private RoundedTextField B = new RoundedTextField(8,20);
 		private RoundedTextField N = new RoundedTextField(8,20);
 		
 		private RoundedJButton Run;
-		ImageIcon icon;
-		private RoundedJButton T_PM = new RoundedJButton("P(masa)");
-		private RoundedJButton T_PT = new RoundedJButton("P(czas)");
+		ImageIcon icon,iconU,iconP,iconZ;
+		private RoundedJButton energia = new RoundedJButton("E(t)");
+		private RoundedJButton moc = new RoundedJButton("P(t)");
+		private RoundedJButton neutrony = new RoundedJButton("n(t)");
+
+		RoundedComboBox<String> comboBox_wielkosci;
+		RoundedComboBox<String> comboBox;
 		
 		public GUI() {
 			super("Będzie boom");
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
-			ImageIcon icon = new ImageIcon(new ImageIcon(GUI.class.getResource("_nuclear.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			icon = new ImageIcon(new ImageIcon(GUI.class.getResource("_nuclear.png")).getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT));
+			iconU = new ImageIcon(new ImageIcon(GUI.class.getResource("_uran.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT));
+			iconP = new ImageIcon(new ImageIcon(GUI.class.getResource("_pluton.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT));
+			iconZ = new ImageIcon(new ImageIcon(GUI.class.getResource("_ziemniak.png")).getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT));
+
 			Run =  new RoundedJButton("Run",icon);
 
-			this.setSize(800, 600);
+			this.setSize(900, 600);
 			panel_N = new JPanel();
 			panel_E = new JPanel();
 			panel_C = new JPanel();
@@ -41,53 +54,94 @@ public class GUI extends JFrame {
 			this.add(panel_C,BorderLayout.CENTER);
 			
 			this.setJMenuBar(Menu.createMenuBar(this));
-
-			String[] description = { "Uran", "Pluton", "Ziemniaki"};
-			RoundedComboBox<String> comboBox = new RoundedComboBox<>(description,20);
-			comboBox.setBackground(Color.white);
 			
-			panel_E1 = new JPanel();
-			panel_E2 = new JPanel();
-			panel_E2_1 = new JPanel();
-			panel_E2_2 = new JPanel();
-			panel_E2_2x = new JPanel();
+			String[] wielkosci = { "Mała", "Duża", "Ogromna"};
+			comboBox_wielkosci = new RoundedComboBox<>(wielkosci,20);
+			comboBox_wielkosci.setSelectedIndex(0);
+			size.setText("1 kg");
+			
+			String[] description = { "Uran", "Pluton", "Ziemniaki"};
+			comboBox = new RoundedComboBox<>(description,20);
+			comboBox.setSelectedIndex(0);
+
+			comboBox.setBackground(Color.white);
+			comboBox_wielkosci.setBackground(Color.white);
+			
+			panel_e1 = new JPanel();
+			panel_e2 = new JPanel();
+			panel_e3 = new JPanel();
+			
+			panel_na3 = new JPanel();
+			panel_wielkosci = new JPanel();
+			panel_materialu = new JPanel();
+			ikonka_materialu = new JLabel(iconU);
+			panel_danych = new JPanel();
 			
 			panel_E.setBackground(Color.white);
-			panel_E1.setBackground(Color.white);
-			panel_E2.setBackground(Color.white);
-			panel_E2_1.setBackground(Color.white);
-			panel_E2_2.setBackground(Color.white);
-			panel_E2_2x.setBackground(Color.white);
+			panel_na3.setBackground(Color.white);
+			panel_wielkosci.setBackground(Color.white);
+			panel_materialu.setBackground(Color.white);
+			panel_danych.setBackground(Color.white);
+			panel_e1.setBackground(Color.white);
+			panel_e2.setBackground(Color.white);
+			panel_e3.setBackground(Color.white);
 			
-			panel_E.setLayout(new GridLayout(2,1,5,10));
-			panel_E.add(panel_E1);
-			panel_E.add(panel_E2);
+			panel_E.setLayout(new GridLayout(3,1,5,10));
+			panel_wielkosci.setLayout(new GridLayout(1,2,5,10));
+			panel_wielkosci.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Rozmiar", TitledBorder.CENTER,TitledBorder.TOP));
+			panel_materialu.setLayout(new GridLayout(1,2,5,10));
+			panel_materialu.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Materiał", TitledBorder.CENTER,TitledBorder.TOP));
+			panel_danych.setLayout(new GridLayout(3,1,5,10));
+			panel_danych.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Ustawienia", TitledBorder.CENTER,TitledBorder.TOP));
+			panel_na3.setLayout(new GridLayout(1,3,5,10));
+		    panel_na3.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK), "Typ wykresu", TitledBorder.CENTER,TitledBorder.TOP));
+		    panel_e1.setLayout(new GridLayout(2,1,5,10));
+		    panel_e2.setLayout(new GridLayout(1,1,5,10));
+		    panel_e3.setLayout(new GridLayout(2,1,5,10));
+		    
+		    panel_E.add(panel_e1);
+		    panel_E.add(panel_e2);
+		    panel_E.add(panel_e3);
+		    
+			panel_e1.add(panel_wielkosci);
+			panel_e1.add(panel_materialu);
+			panel_e2.add(panel_danych);
 
-			panel_E1.setLayout(new GridLayout(4,1,5,10));
-			panel_E1.add(comboBox);
-			panel_E1.add(A);
-			panel_E1.add(B);
-			panel_E1.add(N);
-			
+			panel_danych.add(A);
+			panel_danych.add(B);
+			panel_danych.add(N);
+			panel_e3.add(panel_na3);
+			panel_e3.add(Run);
+
+			panel_wielkosci.add(comboBox_wielkosci);
+			panel_wielkosci.add(size);
+			panel_materialu.add(comboBox);
+			panel_materialu.add(ikonka_materialu);
+			panel_na3.add(energia);
+			panel_na3.add(moc);
+			panel_na3.add(neutrony);
+
 			A.setPlaceholder("A");
 			B.setPlaceholder("B");
 			N.setPlaceholder("N");
 			
-			panel_E2.setLayout(new GridLayout(2,1));
-			panel_E2.add(panel_E2_1);
-			panel_E2.add(panel_E2_2);
-			
-			panel_E2_2.setLayout(new GridLayout(2,1,5,5));
-			panel_E2_2.add(panel_E2_2x);
-			panel_E2_2.add(Run);
-
-			panel_E2_2x.setLayout(new GridLayout(1,2,5,5));
-			panel_E2_2x.add(T_PM);
-			panel_E2_2x.add(T_PT);
-			
 			Object[] elements = {
-	                Run, T_PT, T_PM, N, B, A, comboBox
+	                Run, neutrony, moc, energia, N, B, A, comboBox, size, comboBox_wielkosci
 	            };
+			
+			comboBox_wielkosci.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                updateTextFieldValue();
+	            }
+	        });
+			
+			comboBox.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                updateIcon();
+	            }
+	        });
 			
 			Run.addActionListener(new ActionListener() {
 			    @Override
@@ -125,5 +179,33 @@ public class GUI extends JFrame {
 			        }
 			    }
 			});
+		}
+		private void updateTextFieldValue() {
+	        String selectedSize = (String) comboBox_wielkosci.getSelectedItem();
+	        switch (selectedSize) {
+	            case "Mała":
+	                size.setText("1 kg");
+	                break;
+	            case "Duża":
+	            	size.setText("10 kg");
+	                break;
+	            case "Ogromna":
+	            	size.setText("100 kg");
+	                break;
+	        }
+	    }
+		private void updateIcon() {
+			String selectedMaterial = (String) comboBox.getSelectedItem();
+	        switch (selectedMaterial) {
+	            case "Uran":
+	                ikonka_materialu.setIcon(iconU);
+	                break;
+	            case "Pluton":
+	                ikonka_materialu.setIcon(iconP);
+	                break;
+	            case "Ziemniaki":
+	                ikonka_materialu.setIcon(iconZ);
+	                break;
+	        }
 		}
 }
